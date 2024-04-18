@@ -1,15 +1,24 @@
 pipeline {
     agent any
     stages {
-        stage('Log Jenkins maven') {
-            steps {
-                sh 'mvn --version'
-            }
-        }
-        stage('maven install') {
+        stage('Build') {
             steps {
                 withMaven(maven: 'maven3') {
-                    sh 'mvn clean install'
+                    sh 'mvn clean compile'
+                }
+            }
+        }
+        stage('Test') {
+            steps {
+                withMaven(maven: 'maven3') {
+                    sh 'mvn test'
+                }
+            }
+        }
+        stage('Install') {
+            steps {
+                withMaven(maven: 'maven3') {
+                    sh 'mvn install'
                 }
             }
         }
